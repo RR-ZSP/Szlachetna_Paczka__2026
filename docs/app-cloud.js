@@ -1,6 +1,6 @@
 'use strict';
 const $ = id => document.getElementById(id);
-const API = String(window.SZLACHETNA_PACZKA_API_URL || '').trim().replace(/\\/$/,'');
+const API = String(window.SZLACHETNA_PACZKA_API_URL || '').trim().replace(/\/$/,'');
 const state = {items:[], selected:new Set(), open:false, busy:false};
 function element(tag, cls, value) {
   const e=document.createElement(tag);
