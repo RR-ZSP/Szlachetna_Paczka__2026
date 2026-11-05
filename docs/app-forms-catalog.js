@@ -2,7 +2,7 @@
 /* GitHub Pages + public Google Sheet. No Apps Script and no secrets. */
 const $=id=>document.getElementById(id);
 const cfg=window.SP26||{};
-const store={items:[],selected:new Set(),open:false,busy:false,ready:false};
+const store={items:[],selected:new Set(),open:false,busy:false,ready:false,formUrl:''};
 const node=(tag,klass,txt)=>{const e=document.createElement(tag);if(klass)e.className=klass;if(txt!==undefined)e.textContent=txt;return e;};
 function banner(msg,err=false){const n=$('global-notice');n.textContent=msg;n.className='notice'+(err?' error':'');}
 function readPublicSheet(){
@@ -31,7 +31,7 @@ function parseData(payload){
  return raw.filter(r=>/^SP-[0-9]{3}$/.test(r[0]||'')).map(r=>({
   id:r[0],category:r[1]||'Inne',name:r[2]||'',description:r[3]||'',important:r[4]==='KLUCZOWE',
   state:r[5]||'WOLNY',ownerCodeEnd:r[6]||'',claimCount:Number(r[7]||0),open:r[8]==='TAK',
-  taken:r[5]!=='WOLNY'
+  formUrl:r[9]||'',taken:r[5]!=='WOLNY'
  })).filter(x=>x.name);
 }
 function empty(title,description){const e=node('div','empty');e.append(node('h3','',title),node('p','',description));return e;}
@@ -74,7 +74,8 @@ async function refresh(){
   const payload=await readPublicSheet();
   store.items=parseData(payload);
   store.open=store.items.length>0&&store.items[0].open;
-  store.ready=!!(cfg.FORM_PREFILL_URL||'');
+  store.formUrl=store.items[0]?.formUrl||cfg.FORM_PREFILL_URL||'';
+  store.ready=!!store.formUrl;
   const free=new Set(store.items.filter(x=>!x.taken).map(x=>x.id));
   store.selected=new Set([...store.selected].filter(x=>free.has(x)));
   const total=store.items.length,taken=store.items.filter(x=>x.taken).length;
