@@ -5,7 +5,7 @@
 <meta name="description" content="Szlachetna Paczka 2026 ZSP Mikołów — wybierz prezent, podaruj radość.">
 <title>Szlachetna Paczka 2026 | ZSP Mikołów</title>
 <link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css">
-<script defer src="./config.js"></script><script defer src="./app.js"></script>
+<script defer src="./config-forms.js"></script><script defer src="./app-forms-catalog.js"></script><script defer src="./app-forms-reserve.js"></script>
 </head><body>
 <a class="skip" href="#prezenty">Przejdź do listy prezentów</a>
 <header class="hero"><div class="container">
@@ -25,11 +25,11 @@
     <select id="status" aria-label="Status"><option value="free">Dostępne</option><option value="all">Wszystkie</option><option value="taken">Już wybrane</option></select>
   </div>
   <div class="section"><div><p class="kicker">LISTA POTRZEB</p><h2>Wybierz prezent z sercem</h2><p>Możesz wybrać kilka produktów jednocześnie.</p></div><button id="refresh" class="outline">↻ Odśwież</button></div>
-  <div class="bar"><span id="count">Wczytywanie produktów…</span><span>Dostępność potwierdzana przy zapisie</span></div>
+  <div class="bar"><span id="count">Wczytywanie produktów…</span><span>Przydział według kolejności wysłanych formularzy</span></div>
   <section id="grid" class="grid" aria-live="polite"><div class="empty">Łączymy się z listą prezentów…</div></section>
   <div class="thanks"><span>♡</span> Dziękujemy każdemu darczyńcy. Każdy gest ma znaczenie.</div>
 </main>
-<div class="cart" id="cart"><div class="container cart-in"><div class="cart-label"><span>🎁</span><div><strong id="basket-title">Twój koszyk dobra jest pusty</strong><small id="basket-sub">Wybierz przynajmniej jeden produkt</small></div></div><button class="primary" disabled id="checkout">Potwierdź wybór →</button></div></div>
+<div class="cart" id="cart"><div class="container cart-in"><div class="cart-label"><span>🎁</span><div><strong id="basket-title">Twój koszyk dobra jest pusty</strong><small id="basket-sub">Wybierz przynajmniej jeden produkt</small></div></div><button class="primary" disabled id="checkout">Przejdź do formularza →</button></div></div>
 <div class="backdrop hidden" id="backdrop"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><button type="button" class="close" id="close" aria-label="Zamknij">×</button><div id="dialog-content"></div></div></div>
 <footer><div class="container"><span>✦ ZSP Mikołów · Szlachetna Paczka 2026</span><span>Organizator: Rada Rodziców · <a href="./privacy.html">Informacja o danych osobowych</a></span></div></footer>
 </body></html>
