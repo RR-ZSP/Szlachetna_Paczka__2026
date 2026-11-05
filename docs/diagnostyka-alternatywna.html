@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Test odizolowanego połączenia — Szlachetna Paczka</title><style>
+body{background:#f4f6f1;font:16px/1.55 system-ui,sans-serif;color:#123c2b}main{max-width:700px;margin:6vh auto;padding:28px;border-radius:20px;background:#fff;box-shadow:0 6px 30px #0001}h1{font-size:27px}.box{padding:19px;border-radius:13px;background:#f4f6f7;margin:15px 0;overflow-wrap:anywhere}button{background:#216048;color:white;border:0;border-radius:12px;padding:12px 19px;font:inherit;cursor:pointer}.good{background:#e0f3e6}.bad{background:#ffe8e6}a{color:#216048}
+</style><script src="./config.js"></script></head><body><main>
+<a href="./">← Powrót do formularza</a><h1>Alternatywny test połączenia</h1>
+<p>Sprawdzamy odczyt produktów przez odizolowany skrypt przeglądarki. Bez logowania, bez tworzenia rezerwacji i bez zmiany arkusza.</p>
+<div id="status" class="box" role="status">Uruchamiam test…</div><button id="again">Sprawdź ponownie</button><p id="hint"></p>
+<script>
+let worker;
+function run(){
+ if(worker)worker.terminate();
+ const s=document.getElementById('status'),hint=document.getElementById('hint');
+ s.className='box';s.textContent='Sprawdzam połączenie…';hint.textContent='';
+ if(typeof Worker==='undefined'){s.textContent='Ta przeglądarka nie obsługuje Workers.';s.className='box bad';return;}
+ worker=new Worker('./worker-probe.js');
+ let done=false;
+ const timer=setTimeout(()=>{if(done)return;done=true;s.textContent='Brak odpowiedzi po 18 sekundach';s.className='box bad';worker.terminate();},18000);
+ worker.onmessage=e=>{
+  if(done)return;
+  const m=e.data;
+  if(m.kind==='response'){
+   done=true;clearTimeout(timer);worker.terminate();
+   if(m.data&&m.data.ok){
+    s.textContent='Połączenie działa! Formularz: '+(m.data.open?'OTWARTY':'ZAMKNIĘTY')+'. Liczba produktów: '+(m.data.products||[]).length;
+    s.className='box good';hint.textContent='Ten sposób komunikacji może zastąpić obecne połączenie w formularzu.';
+   }else{s.className='box bad';s.textContent='API odpowiedziało błędem: '+(m.data&&m.data.error||'nieznany');}
+  }else if(m.kind==='error'){done=true;clearTimeout(timer);worker.terminate();s.className='box bad';s.textContent='Nie zadziałało: '+m.message;}
+ };
+ worker.onerror=e=>{if(done)return;done=true;clearTimeout(timer);worker.terminate();s.className='box bad';s.textContent='Błąd mechanizmu Worker: '+e.message;};
+ worker.postMessage({url:window.SZLACHETNA_PACZKA_API_URL});
+}
+document.getElementById('again').onclick=run;run();
+</script></main></body></html>
