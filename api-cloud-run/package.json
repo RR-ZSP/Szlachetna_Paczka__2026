@@ -1,0 +1,17 @@
+{
+  "name": "szlachetna-paczka-gsheet-api",
+  "private": true,
+  "version": "1.0.0",
+  "description": "API rezerwacji GitHub Pages ↔ prywatny Google Sheets bez Apps Script",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --check server.js"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  }
+}
