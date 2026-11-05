@@ -4,3 +4,56 @@
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:640px){.container{padding:0 15px}.hero{padding-bottom:78px}.brand{font-size:9px}.year{font-size:10px;padding:7px 9px}.eyebrow{margin-top:43px}.hero h1{font-size:44px}.stats div{flex:1;min-width:calc(50% - 10px);padding:12px}.stats strong{font-size:24px}.grid{grid-template-columns:1fr}.filters{padding:12px}.filters select{min-width:0;flex:1;font-size:12px}.section{align-items:start}.section h2{font-size:26px}.section .outline{white-space:nowrap;padding:9px 10px;font-size:12px}.bar{flex-wrap:wrap}.cart-label{gap:7px}.cart-label>span{padding:6px}.cart-label strong{font-size:13px}.cart-label small{font-size:11px}.cart .primary{font-size:12px;padding:12px 9px}.dialog{padding:21px}.dialog-actions{flex-direction:column-reverse}.dialog-actions button{width:100%}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+/* Miniatura plakatu zamiast dużych gwiazdek w nagłówku */
+.hero-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(185px,225px);
+  align-items:center;
+  gap:clamp(20px,4vw,54px);
+}
+.hero-copy{min-width:0}
+.hero-art{
+  margin:45px 7px 0 0;
+  width:100%;
+  position:relative;
+  justify-self:end;
+  isolation:isolate;
+}
+.hero-art::before{
+  content:"";
+  position:absolute;
+  inset:17px -15px -12px 10px;
+  border-radius:26px;
+  background:rgba(238,198,144,.23);
+  filter:blur(27px);
+  z-index:-1;
+}
+.hero-poster{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:450 / 550;
+  object-fit:cover;
+  background:#f7f3ec;
+  border:7px solid #fff8e9;
+  border-radius:13px;
+  box-shadow:0 20px 45px rgba(1,24,13,.39),0 3px 9px rgba(0,0,0,.12);
+  transform:rotate(2deg);
+  transition:transform .22s ease,box-shadow .22s ease;
+}
+.hero-poster:hover{
+  transform:rotate(0deg) translateY(-3px);
+  box-shadow:0 24px 48px rgba(1,24,13,.42);
+}
+@media(max-width:900px) and (min-width:681px){
+  .hero-layout{grid-template-columns:minmax(0,1fr) 175px;gap:22px}
+  .hero-art{margin-top:32px}
+  .hero h1{font-size:clamp(40px,6vw,58px)}
+  .hero .stats div{min-width:133px;padding:12px 14px}
+}
+@media(max-width:680px){
+  .hero-layout{grid-template-columns:1fr;gap:19px}
+  .hero-art{width:170px;justify-self:center;margin:4px 0 12px}
+  .hero-poster{transform:rotate(-2deg)}
+}
