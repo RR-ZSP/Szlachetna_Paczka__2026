@@ -1,6 +1,6 @@
 /* Google Forms: rodzic zatwierdza w oficjalnym formularzu Google. */
 function prefillSelected(ids,code){
- const template=String(cfg.FORM_PREFILL_URL||'').trim();
+ const template=String(store.formUrl||cfg.FORM_PREFILL_URL||'').trim();
  const url=new URL(template);
  if(url.hostname!=='docs.google.com'||!url.pathname.includes('/forms/')||!url.pathname.endsWith('/viewform'))
   throw Error('Podaj pełny link do wstępnie wypełnionego Formularza Google.');
