@@ -68,7 +68,14 @@ function otworzFormularz2026(){
  }
  const header=rows.getRange(1,1,1,6).getDisplayValues()[0];
  if(!header[0]||!header[4]||!header[5])throw Error('Zakładka odpowiedzi nie ma 6 wymaganych kolumn. Sprawdź kolejność pytań.');
- FormApp.openByUrl(edit).setAcceptingResponses(true);
+ const form=FormApp.openByUrl(edit);
+ if(form.supportsAdvancedResponderPermissions() && !form.isPublished()){
+  form.setPublished(true);
+ }
+ form.setAcceptingResponses(true);
+ if(!form.isAcceptingResponses())throw Error('Google Forms nadal nie przyjmuje odpowiedzi. Sprawdź opcję Opublikuj i Odpowiedzi.');
+ Logger.log('Formularz opublikowany: '+(form.supportsAdvancedResponderPermissions()?form.isPublished():'tryb bez publikacji'));
+ Logger.log('Przyjmowanie odpowiedzi: '+form.isAcceptingResponses());
  settings.getRange('B5').setValue('TAK');
  settings.getRange('B2').setValue('TAK');
  Logger.log('FORMULARZ OTWARTY — wykonaj test na zwykłej karcie telefonu i przetestuj konflikty rezerwacji.');
