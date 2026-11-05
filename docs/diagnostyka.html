@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Diagnostyka połączenia · Szlachetna Paczka</title>
+<style>body{font:16px/1.6 system-ui,sans-serif;background:#f4f5f0;color:#143d32;margin:0}main{max-width:700px;margin:7vh auto;padding:28px;background:#fff;border-radius:18px;box-shadow:0 10px 30px #153d3312}h1{line-height:1.2}#status{padding:18px;border-radius:10px;background:#f8f1e4;color:#5f4524}.ok{background:#e1f3e5!important;color:#135532!important}.error{background:#f9e3e0!important;color:#932e32!important}button{padding:11px 16px;border:0;background:#18583f;color:white;border-radius:10px;font:inherit}code{overflow-wrap:anywhere}p{margin-bottom:15px}a{color:#165f49}</style>
+<script src="./config.js"></script></head><body><main>
+<a href="./">← Powrót do formularza</a>
+<h1>Diagnostyka połączenia z arkuszem</h1>
+<p>Ten test sprawdza jedynie możliwość odczytu listy produktów. Nie tworzy żadnej rezerwacji.</p>
+<div id="status" role="status">Sprawdzam połączenie z Google…</div>
+<p id="details"></p><p><a id="direct" target="_blank" rel="noopener">Otwórz odpowiedź Google bezpośrednio</a></p>
+<button id="retry" type="button">Sprawdź ponownie</button>
+<p><small>Jeśli otworzy się strona logowania lub komunikat Google o błędzie pliku, sprawdź publiczne wdrożenie Apps Script. Jeśli zobaczysz tekst zaczynający się od <code>__sp26_testcheck12345(...)</code>, API odpowiada poprawnie.</small></p>
+</main><script>
+const API=window.SZLACHETNA_PACZKA_API_URL||'';
+function run(){
+ const status=document.getElementById('status');
+ const details=document.getElementById('details');
+ status.className='';status.textContent='Sprawdzam połączenie…';details.textContent='';
+ const cb='__sp26_testcheck12345';
+ const url=new URL(API);
+ url.searchParams.set('action','items');url.searchParams.set('callback',cb);
+ url.searchParams.set('_',String(Date.now()));
+ document.getElementById('direct').href=url.href;
+ const script=document.createElement('script');let done=false;
+ const finish=(ok,msg)=>{
+  if(done)return;done=true;clearTimeout(timer);script.remove();delete window[cb];
+  status.className=ok?'ok':'error';status.textContent=msg;
+ };
+ window[cb]=res=>{
+  if(res&&res.ok){finish(true,'Połączenie działa! Formularz: '+(res.open?'otwarty':'zamknięty')+'. Produkty: '+(res.products||[]).length);}
+  else finish(false,'Google odpowiedziało błędem: '+(res&&res.error||'nieznana odpowiedź'));
+ };
+ const timer=setTimeout(()=>finish(false,'Brak poprawnej odpowiedzi z Google (15 sekund).'),15000);
+ script.onerror=()=>finish(false,'Google zwróciło niedostępny albo nieprawidłowy skrypt — sprawdź wdrożenie Apps Script.');
+ script.src=url.href;document.head.append(script);
+}
+document.getElementById('retry').onclick=run;run();
+</script></body></html>
