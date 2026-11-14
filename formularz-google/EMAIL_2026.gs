@@ -130,11 +130,11 @@ function potwierdzRezerwacjeMailem2026(e) {
     const address = String(record[sp26_kolumna_(headers,SP26_MAIL_CONFIG.EMAIL_QUESTION)] || '').trim();
     const donor = String(record[sp26_kolumna_(headers,'Darczyńca')] || '').trim().replace(/[\r\n]/g,' ');
     const selected = sp26_numeryProduktow_(record[sp26_kolumna_(headers,'ID produktów')]);
-    if (!/^SP26-[\w-]{12,80}$/i.test(code))
+    if (!/^SP26-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(code))
       throw new Error('Nieprawidłowy kod zgłoszenia w wierszu '+rowNo+'.');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address) || address.length>254)
       throw new Error('Nieprawidłowy adres e-mail w wierszu '+rowNo+'.');
-    if (!selected.length) throw new Error('Brak ID produktów w wierszu '+rowNo+'.');
+    if (!selected.length || selected.length > 12) throw new Error('Nieprawidłowa liczba produktów w wierszu '+rowNo+'.');
 
     const audit = sp26_arkuszLogow_(book);
     if (audit.getLastRow() > 1) {
@@ -179,6 +179,9 @@ function potwierdzRezerwacjeMailem2026(e) {
       'Dziękujemy za udział w Szlachetnej Paczce organizowanej przez RR przy ZSP Mikołów.',
       'Kod Twojego zgłoszenia: '+code,
       '',
+      'WYBRANE PRZEZ CIEBIE PRODUKTY:',
+      sp26_wiersze_(selected.map(id => ({id, name: products.get(id) ? String(products.get(id)[2]) : 'Nieznany produkt'}))),
+      '',
       'PRZYDZIELONE TOBIE PRODUKTY:',
       sp26_wiersze_(assigned),
       '',
@@ -199,6 +202,8 @@ function potwierdzRezerwacjeMailem2026(e) {
       '<p>Dzień dobry'+(donor?', '+sp26_htmlEscape_(donor):'')+'!</p>',
       '<p>Dziękujemy za udział w akcji <b>RR przy ZSP Mikołów</b>.</p>',
       '<p>Kod zgłoszenia: <b>'+sp26_htmlEscape_(code)+'</b></p>',
+      '<h3 style="color:#254f3c">Wszystkie wybrane produkty</h3>',
+      sp26_htmlLista_(selected.map(id => ({id, name: products.get(id) ? String(products.get(id)[2]) : 'Nieznany produkt'}))),
       '<h3 style="color:#1f714d">✓ Produkty przydzielone Tobie</h3>',
       sp26_htmlLista_(assigned),
       '<h3 style="color:#9b5e34">Produkty nieprzydzielone</h3>',
