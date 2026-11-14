@@ -62,7 +62,7 @@ function showCheckout(){
  const sum=node('div','summary');
  store.items.filter(p=>store.selected.has(p.id)).forEach((p,i)=>sum.append(node('div','',(i+1)+'. '+p.name)));
  pane.append(sum);
- const p=node('p','','Za chwilę otworzy się Formularz Google. Wpisz swoje dane, sprawdź listę i kliknij „Prześlij”. Dopiero wtedy zgłoszenie trafi do arkusza. Przydział odbywa się według kolejności odpowiedzi.');
+ const p=node('p','','Za chwilę otworzy się Formularz Google. Wpisz swoje dane oraz adres e-mail, sprawdź listę i kliknij „Prześlij”. Po wysłaniu otrzymasz wiadomość z potwierdzeniem produktów przydzielonych do Twojego zgłoszenia. Pierwszeństwo ma wcześniejsza odpowiedź. Zgłoszenie nie oznacza jeszcze fizycznego dostarczenia rzeczy do szkoły.');
  pane.append(p);
  let link;
  try{link=prefillSelected(ids,code);}
