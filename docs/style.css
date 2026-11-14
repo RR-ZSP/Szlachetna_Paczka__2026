@@ -57,3 +57,36 @@
   .hero-art{width:170px;justify-self:center;margin:4px 0 12px}
   .hero-poster{transform:rotate(-2deg)}
 }
+
+
+/* Informacja o rodzinie wspieranej w akcji */
+.family-highlight{
+  max-width:550px;
+  margin:21px 0 3px;
+  padding:16px 19px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(242,212,157,.48);
+  border-left:4px solid #e3bb82;
+  border-radius:12px;
+}
+.family-highlight h2{
+  margin:0 0 5px;
+  font:600 clamp(21px,2.4vw,27px)/1.3 'Playfair Display',Georgia,serif;
+  color:#fff9ec;
+}
+.family-highlight p{
+  margin:0;
+  font-size:13px;
+  letter-spacing:.015em;
+  color:#e9f2e8;
+}
+.family-highlight strong{
+  color:#f0ca91;
+  font-weight:800;
+  letter-spacing:.045em;
+  white-space:nowrap;
+}
+@media(max-width:680px){
+  .family-highlight{margin-top:17px;padding:13px 15px}
+  .family-highlight h2{font-size:23px}
+}
